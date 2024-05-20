@@ -5,13 +5,13 @@ from src.operations import Operations
 
 def conclusion(filename) -> list[Operations]:
     operation: list[Operations] = []
-    with open(filename) as f:
+    with open(filename, encoding='utf8') as f:
         for data in json.load(f):
             if data:
                 op = Operations.init_from_dict(data)
                 operation.append(op)
 
-        return json.load(f)
+        return operation
 
 
 def filtered_operation_by_state(*operation: Operations, state: str):

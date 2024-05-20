@@ -76,7 +76,7 @@ class Operations:
                 code_currency=data['operationAmount']['currency']['code']
             ),
             description=data['description'],
-            from_person=data['from'],
+            from_person=data.get('from'),
             to_bank=data.get('to')
         )
 

@@ -7,8 +7,7 @@ def main(filename='operations.json'):
     operation = filtered_operation_by_date(*operation)
 
     for op in operation[:5]:
-        print(op.save())
-        print()
+        print(op)
 
 
 if __name__ == '__main__':
