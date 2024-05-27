@@ -47,6 +47,11 @@ class Amount:
         self.name_currency = name_currency
         self.code_currency = code_currency
 
+    def __repr__(self):
+        return (f'Amount(price={self.price}, '
+                f'name_currency={self.name_currency}',
+                f'code_currency={self.code_currency}')
+
 
 class Operations:
     def __init__(self, id, state, date, amount, description, from_person, to_bank):
@@ -60,7 +65,7 @@ class Operations:
 
     def __repr__(self):  # pragma: nocover
         return (
-            f'Operation({self.id}, state={self.state}, date={self.date}, amount={self.amount},'
+            f'Operation(id={self.id}, state={self.state}, date={self.date}, amount={self.amount},'
             f'from={self.from_person}, to={self.to_bank})'
         )
 
@@ -76,18 +81,18 @@ class Operations:
                 code_currency=data['operationAmount']['currency']['code']
             ),
             description=data['description'],
-            from_person=data.get('from'),
-            to_bank=data.get('to')
+            to_bank=Payment.init_from_str(data['to']),
+            from_person=Payment.init_from_str(data['from']) if 'from' in data else None
         )
 
-    def safe(self) -> str:  # pragma: nocover
+    def save(self) -> str:  # pragma: nocover
         lines = [
             f'{self.date.strftime("%d.%m.%Y")}: {self.description}'
         ]
         if self.from_person:
             lines.append(f'{self.from_person.safe()} -> {self.to_bank.safe()}')
         else:
-            lines.append(f'{self.from_person.safe()}')
+            lines.append(f'{self.from_person.safe_number()}')
 
         lines.append(f'{self.amount.price} {self.amount.name_currency}')
 
